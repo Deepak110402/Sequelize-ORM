@@ -58,9 +58,11 @@ app.delete('/delete', authuser, function(request,response){
     response.send("Success");
 });
 
-app.post('/update', authuser, function(request, response){
+app.post('/update', authuser, async function(request, response){
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(request.body.Password, salt);
     User.update(
-        { Password: request.body.Password },
+        { Password: hashedPassword },
         { where: { Email: request.body.Email }}
     );
     response.send("Success");
