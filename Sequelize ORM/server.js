@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const bcrypt = require('bcrypt');
 
 app.use(
     express.urlencoded({
@@ -15,11 +16,11 @@ global.email = ''
 const db = require("./models");
 const { User } = require("./models");
 
-app.post('/login', function(request, response) {
+app.post('/login', async function(request, response) {
     User.findOne(
         { where: { Email: request.body.Email }})
         .then((users) => {
-            if ( users['Password'] == request.body.Password ) {
+            if ( bcrypt.compareSync(request.body.Password, users['Password']) ) {
                 response.send('Success')
                 email = request.body.Email
                 if ( users['Role'] == "Admin") {
@@ -39,18 +40,16 @@ app.get('/all', function(request, response) {
     });
 });
 
-app.post('/insert', function (request, response) {
-    return User.create({
+app.post('/insert', async function (request, response) {
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(request.body.Password, salt);
+    User.create({
         Name: request.body.Name,
         Email: request.body.Email,
-        Password: request.body.Password,
+        Password: hashedPassword,
         Role: "User"
     }).then(function (users) {
-        if (users) {
-            response.send(users);
-        } else {
-            response.status(400).send('Error in insert new record');
-        }
+        response.send(users);
     });
 });
 
