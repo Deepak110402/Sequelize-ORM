@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <title>Login</title>
+        <link rel="stylesheet" href="us.css">
+        <link rel="stylesheet" href="bootstrap-4.0.0-alpha.6-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="bootstrap-4.0.0-alpha.6-dist/css/bootstrap-grid.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        <div class="box">
+            <h1>Login</h1><br>
+            <form id="login-form">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"></span>
+                    </div>
+                    <input type="text" id="email" class="form-control" placeholder="Email id" aria-label="Email id" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <input id="password" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2"></span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block margintop">Submit</button>
+                <div id="Success"></div>
+            </form>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="bootstrap-4.0.0-alpha.6-dist/js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function () {
+            $('#login-form').submit(function (event) {
+                event.preventDefault();
+                let email = $('#email').val();
+                let password = $('#password').val();
+                let success = $('#Success');
+                $.ajax({
+                    type: "POST",
+                    url: 'http://localhost:3000/login',
+                    crossDomain:true,
+                    data: {
+                        Email: email,
+                        Password: password
+                    }
+                }).done(function (data) {
+                    if (data == "Success") {
+                        success.append('<div class="alert alert-primary" role="alert">Login Succesful</div>')
+                    } else {
+                        success.append('<div class="alert alert-primary" role="alert">Password is wrong</div>')
+                    }
+                    console.log(data)
+                }).fail(function (error) {
+                    console.log(error.responseText)
+                });
+            });
+        })
+        </script>
+    </body>
+</html>

@@ -1,0 +1,27 @@
+div.box {
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 50%;
+    width: 50%;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid gray;
+    padding: 4%;
+    margin-top: 5%;
+    box-shadow:  3px 3px #888888;
+}
+.input-group-prepend {
+    margin: 2%;
+}
+.input-group-append {
+    margin: 2%;
+}
+
+@media (max-width: 576px) {
+    div.box {
+        margin-left: 13%;
+        margin-right: 13%;
+        width: 74%;
+        margin-top: 20%;
+    }
+}
